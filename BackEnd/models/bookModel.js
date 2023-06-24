@@ -8,7 +8,11 @@ const bookSchema = mongoose.Schema({
     image: {type: String, require:true},
     category: {type: String, default:"other"},
     Descriptions: {type: String}
-})
+},
+
+{
+    timestamps: true,
+});
 
 
 const BookModel = mongoose.model("book", bookSchema);

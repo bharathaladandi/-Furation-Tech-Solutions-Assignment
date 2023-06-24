@@ -1,10 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require('cors')
-const connect = require("./config/db")
+const connect = require("./config/db");
+const { UserRouter } = require("./Routes/userRoutes");
+const { BookRouter } = require("./Routes/bookRoutes");
+const { CartRouter } = require("./Routes/CartRoutes");
 
 
 //Imports routes path
+
 
 const app = express();
 
@@ -14,7 +18,9 @@ app.use(cors());
 const PORT = process.env.PORT || 8080;
 
 // Give query to route
-
+app.use("/users", UserRouter);
+app.use("/book", BookRouter);
+app.use("/cart", CartRouter);
 
 
 
