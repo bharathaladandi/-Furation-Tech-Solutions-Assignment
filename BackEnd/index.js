@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require('cors')
 const connect = require("./config/db")
 
+
 //Imports routes path
 
 const app = express();
