@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     AspectRatio,
     Box,
@@ -11,41 +10,38 @@ import {
     Text,
     useColorModeValue,
   } from '@chakra-ui/react'
-import { FavouriteButton } from '../pages/books/FavouriteButton'
-import { PriceTag } from '../pages/books/PriceTag'
-import { Rating } from '../pages/books/Rating'
+import { FavouriteButton } from './FavouriteButton'
+import { PriceTag } from './PriceTag'
+import { Rating } from './Rating'
 
 import { useDispatch } from 'react-redux';
-import { add } from '../Redux/cartSlice';
+import { add } from '../../Redux/cartSlice';
 import { useState } from 'react';
 
-import { productsApi, useGetAllProductsQuery } from '../Redux/productapi';
+import { productsApi, useGetAllProductsQuery } from '../../Redux/productapi';
 import { useSelector } from 'react-redux';
 
-
-export const Homepage = (props) => {
-
-
-    const { items, status } = useSelector(state => state.products)
-    const { data, error, isLoading } = useGetAllProductsQuery()
-
-    const { book, rootProps } = props
-  
-  
-      const dispatch = useDispatch();
-  
-      const [products, setProducts] = useState([]);
-
-  
-      const handleAdd = (product) => {
-  
-        dispatch(add(product))
-      }
+  export const ProductCard = (props) => {
 
       
+  const { items, status } = useSelector(state => state.products)
+  const { data, error, isLoading } = useGetAllProductsQuery()
+
+
+    const dispatch = useDispatch();
+
+    const [products, setProducts] = useState([]);
+    const { product, rootProps } = props
+    const { category, title, image, price, rating } = product
+
+
+    const handleAdd = (product) => {
+
+      dispatch(add(product))
+    }
+
     return (
-      <div className="book">
-        <Stack
+      <Stack
         spacing={{
           base: '4',
           md: '5',
@@ -56,8 +52,8 @@ export const Homepage = (props) => {
         <Box position="relative">
           <AspectRatio ratio={4 / 4}>
             <Image
-              src={book.image}
-              alt={book.category}
+              src={image}
+              alt={category}
               draggable="false"
               fallback={<Skeleton />}
               borderRadius={{
@@ -66,24 +62,32 @@ export const Homepage = (props) => {
               }}
             />
           </AspectRatio>
+          <FavouriteButton
+            position="absolute"
+            top="4"
+            right="4"
+            aria-label={`Add ${title} to your favourites`}
+          />
         </Box>
         <Stack>
           <Stack spacing="1">
             <Text fontWeight="medium" color={useColorModeValue('gray.700', 'gray.400')}>
-              {book.title}
+              {title}
             </Text>
-            <PriceTag price={book.cost} salePrice={book.cost} currency="USD" />
+            <PriceTag price={price} salePrice={price} currency="USD" />
           </Stack>
           <HStack>
-            <Rating defaultValue={3}  size="sm" />
+            <Rating defaultValue={rating} size="sm" />
             <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
               12 Reviews
             </Text>
           </HStack>
         </Stack>
 
+
+
         <Stack align="center">
-          <Button onClick={() => handleAdd(book)} colorScheme="blue" width="full">
+          <Button onClick={() => handleAdd(product)} colorScheme="blue" width="full">
           {/* Quick shop */} Add to Cart
           </Button>
           <Link
@@ -95,10 +99,5 @@ export const Homepage = (props) => {
           </Link>
         </Stack>
       </Stack>
-      </div>
-    );
-  };
-
-
-
-  
+    )
+  }
